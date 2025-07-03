@@ -1,0 +1,16 @@
+@font-face {
+  font-family: "CabinetGrotesk";
+  src: url("/fonts/CabinetGrotesk-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
+.page {
+  background-color: #f3f3f3;
+}
+
+.page__content {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
