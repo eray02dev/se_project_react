@@ -2,8 +2,6 @@ import "./WeatherCard.css";
 import { weatherOptions, defaultWeatherOptions } from "../../utils/constants";
 
 function WeatherCard({ weatherData }) {
-  console.log(weatherData);
-  console.log(weatherOptions);
   const filteredOptions = weatherOptions.filter((option) => {
     return (
       option.day === weatherData.isDay &&
@@ -11,16 +9,11 @@ function WeatherCard({ weatherData }) {
     );
   });
 
-  // ❗️ Eğer eşleşme yoksa, default + day + condition verilerini elle ekle
   const weatherOption =
     filteredOptions.length === 0
-      ? {
-          ...defaultWeatherOptions[weatherData.isDay ? "day" : "night"],
-          day: weatherData.isDay,
-          condition: weatherData.condition,
-        }
+      ? defaultWeatherOptions[weatherData.isDay ? "day" : "night"]
       : filteredOptions[0];
-  console.log(weatherOption);
+
   return (
     <section className="weather-card">
       <p className="weather-card__temp">{weatherData.temp.F} &deg; F</p>

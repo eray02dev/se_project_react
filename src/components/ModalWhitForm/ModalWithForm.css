@@ -94,7 +94,7 @@
   color: rgba(0, 0, 0, 1);
 }
 .modal__submit {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 1);
   color: #fff;
   font-family: "CabinetGrotesk", sans-serif;
   font-weight: 700;
@@ -110,8 +110,12 @@
   width: fit-content;
 }
 
+.modal__submit:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
 .modal__submit:disabled {
-  background-color: #ccc;
+  background-color: rgba(0, 0, 0, 0.3);
   cursor: not-allowed;
 }
 .modal__label_type_radio {

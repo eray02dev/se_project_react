@@ -84,7 +84,6 @@
   margin: 0;
 }
 
-/* ✅ Sade hover gölgelendirme */
 .modal__close:hover {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   border-radius: 4px;

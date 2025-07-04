@@ -1,14 +1,7 @@
 import "./ModalWithForm.css";
 import closeicon from "../../assets/closeicon.png";
 
-function ModalWithForm({
-  children,
-  buttonText,
-  title,
-  activeModal,
-  onClose,
-  onSubmit, // ✅ yeni prop eklendi
-}) {
+function ModalWithForm({ children, buttonText, title, activeModal, onClose }) {
   return (
     <div
       className={`modal ${activeModal === "add-garment" ? "modal_opened" : ""}`}
@@ -18,9 +11,7 @@ function ModalWithForm({
         <button onClick={onClose} type="button" className="modal__close">
           <img src={closeicon} alt="close" />
         </button>
-        <form className="modal__form" onSubmit={onSubmit}>
-          {" "}
-          {/* ✅ form submit desteği */}
+        <form className="modal__form">
           {children}
           <button type="submit" className="modal__submit">
             {buttonText}

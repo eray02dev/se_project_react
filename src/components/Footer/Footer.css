@@ -1,0 +1,14 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 171px 42px 40px 0;
+  background-color: #f5f5f5;
+  font-size: 16px;
+  color: rgba(0, 0, 0, 1);
+  font-family: "CabinetGrotesk", sans-serif;
+}
+
+.footer__left,
+.footer__right {
+  margin: 0;
+}

@@ -10,6 +10,7 @@ import Header from "../Header/Header";
 import Main from "../Main/Main";
 import ModalWithForm from "../ModalWhitForm/ModalWithForm";
 import ItemModal from "../ItemModal/ItemModal";
+import Footer from "../Footer/Footer";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 
 function App() {
@@ -19,19 +20,7 @@ function App() {
     city: "",
   });
 
-  // ✅ clothingItems state’i localStorage’tan başlatılıyor
-  const [clothingItems, setClothingItems] = useState(() => {
-    const saved = localStorage.getItem("clothingItems");
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (err) {
-        console.error("localStorage parse hatası:", err);
-      }
-    }
-    return defaultClothingItems;
-  });
-
+  const [clothingItems] = useState(defaultClothingItems); // sadece default veriler
   const [activeModal, setActiveModal] = useState("");
   const [SelectedCard, setSelectedCard] = useState({});
 
@@ -46,29 +35,6 @@ function App() {
 
   const closeActiveModal = () => {
     setActiveModal("");
-  };
-
-  const handleAddGarment = (e) => {
-    e.preventDefault();
-
-    const name = e.target.name.value;
-    const link = e.target.imageUrl.value;
-    const weather = e.target.weather.value;
-
-    const newItem = {
-      _id: Date.now(),
-      name,
-      link,
-      weather,
-    };
-
-    const updatedItems = [newItem, ...clothingItems];
-    setClothingItems(updatedItems);
-
-    // ✅ localStorage'a da kaydediyoruz
-    localStorage.setItem("clothingItems", JSON.stringify(updatedItems));
-
-    closeActiveModal();
   };
 
   useEffect(() => {
@@ -89,6 +55,7 @@ function App() {
           handleCardClick={handleCardClick}
           clothingItems={clothingItems}
         />
+        <Footer />
       </div>
 
       <ModalWithForm
@@ -96,7 +63,6 @@ function App() {
         buttonText="Add garment"
         activeModal={activeModal}
         onClose={closeActiveModal}
-        onSubmit={handleAddGarment}
       >
         <label htmlFor="name" className="modal__label">
           Name{" "}
