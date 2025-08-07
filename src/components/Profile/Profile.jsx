@@ -1,6 +1,7 @@
 import "./Profile.css";
 import ItemCard from "../ItemCard/ItemCard";
 import avatar from "../../assets/avatar.png";
+import ClothesSection from "../ClothesSection/ClothesSection";
 
 function Profile({ clothingItems, onCardClick, onAddClick }) {
   return (
@@ -19,11 +20,10 @@ function Profile({ clothingItems, onCardClick, onAddClick }) {
             </button>
           </div>
 
-          <ul className="profile__cards">
-            {clothingItems.map((item) => (
-              <ItemCard key={item._id} item={item} onCardClick={onCardClick} />
-            ))}
-          </ul>
+          <ClothesSection
+            clothingItems={clothingItems}
+            onCardClick={onCardClick}
+          />
         </div>
       </div>
     </div>
