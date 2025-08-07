@@ -1,3 +1,4 @@
+import "./ClothesSection.css";
 import ItemCard from "../ItemCard/ItemCard";
 
 function ClothesSection({ clothingItems, onCardClick }) {
