@@ -21,10 +21,29 @@
   padding: 20px;
   box-sizing: border-box;
   background-color: #fff;
+}
+
+.modal__footer-top {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal__delete-text {
+  background: none;
+  border: none;
+  color: rgba(255, 77, 0, 1);
+  font-family: "CabinetGrotesk", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  opacity: 0.9;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.modal__delete-text:hover {
+  color: rgba(204, 61, 0, 1);
+  opacity: 1;
 }
 
 .modal__caption {

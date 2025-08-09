@@ -7,6 +7,8 @@ import Footer from "../Footer/Footer";
 import AddItemModal from "../AddItemModal/AddItemModal";
 import ItemModal from "../ItemModal/ItemModal";
 import Profile from "../Profile/Profile";
+import ConfirmDeleteModal from "../ConfirmDeleteModal/ConfirmDeleteModal";
+
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import { CurrentTemperatureUnitProvider } from "../../contexts/CurrentTemperatureUnit";
 import { coordinates, APIkey } from "../../utils/constants";
@@ -23,7 +25,12 @@ function App() {
 
   const [clothingItems, setClothingItems] = useState([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
   const [selectedCard, setSelectedCard] = useState(null);
+
+  const [pendingDeleteId, setPendingDeleteId] = useState(null);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -31,9 +38,7 @@ function App() {
   const closeActiveModal = () => setIsAddModalOpen(false);
 
   const handleAddItem = (newItem) => {
-    // newItem: { name, link, weather }
     setIsSaving(true);
-    // server shape: { name, imageUrl, weather }
     const payload = {
       name: newItem.name,
       imageUrl: newItem.link,
@@ -42,7 +47,6 @@ function App() {
 
     addItem(payload)
       .then((saved) => {
-        // server returns { id, name, imageUrl, weather }
         const clientShape = { ...saved, link: saved.imageUrl };
         setClothingItems((prev) => [clientShape, ...prev]);
         closeActiveModal();
@@ -54,14 +58,26 @@ function App() {
   const handleCardClick = (card) => setSelectedCard(card);
   const handleCloseCardModal = () => setSelectedCard(null);
 
-  const handleDeleteItem = (id) => {
+  const openConfirm = () => {
+    if (!selectedCard) return;
+    setPendingDeleteId(selectedCard.id ?? selectedCard._id);
+    setSelectedCard(null);
+    setIsConfirmOpen(true);
+  };
+
+  const closeConfirm = () => setIsConfirmOpen(false);
+
+  const handleConfirmDelete = () => {
+    if (!pendingDeleteId) return;
     setIsDeleting(true);
-    deleteItem(id)
+
+    deleteItem(pendingDeleteId)
       .then(() => {
         setClothingItems((prev) =>
-          prev.filter((it) => (it.id ?? it._id) !== id)
+          prev.filter((it) => (it.id ?? it._id) !== pendingDeleteId)
         );
-        handleCloseCardModal();
+        setPendingDeleteId(null);
+        closeConfirm();
       })
       .catch(console.error)
       .finally(() => setIsDeleting(false));
@@ -74,12 +90,8 @@ function App() {
 
     getItems()
       .then((data) => {
-        // server -> client shape mapping
-        const fixedItems = data.map((item) => ({
-          ...item,
-          link: item.imageUrl,
-        }));
-        setClothingItems(fixedItems);
+        const fixed = data.map((item) => ({ ...item, link: item.imageUrl }));
+        setClothingItems(fixed);
       })
       .catch(console.error);
   }, []);
@@ -88,6 +100,7 @@ function App() {
     <CurrentTemperatureUnitProvider>
       <div className="page">
         <Header handleAddClick={handleAddClick} weatherData={weatherData} />
+
         <Routes>
           <Route
             path="/"
@@ -110,6 +123,7 @@ function App() {
             }
           />
         </Routes>
+
         <Footer />
 
         <AddItemModal
@@ -124,12 +138,17 @@ function App() {
             card={selectedCard}
             onClose={handleCloseCardModal}
             activeModal="preview"
-            onDelete={() =>
-              handleDeleteItem(selectedCard.id ?? selectedCard._id)
-            }
+            onRequestDelete={openConfirm}
             isDeleting={isDeleting}
           />
         )}
+
+        <ConfirmDeleteModal
+          isOpen={isConfirmOpen}
+          onClose={closeConfirm}
+          onConfirm={handleConfirmDelete}
+          isDeleting={isDeleting}
+        />
       </div>
     </CurrentTemperatureUnitProvider>
   );

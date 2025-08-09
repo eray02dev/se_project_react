@@ -1,0 +1,65 @@
+/* Kapsayıcıya küçük bir scope sınıfı verdik: .confirm */
+.confirm .modal__content {
+  text-align: center;
+}
+
+/* Başlıklar */
+.confirm__title {
+  color: rgba(0, 0, 0, 1);
+  margin: 12px 0 2px;
+  font-weight: 700;
+}
+
+.confirm__subtitle {
+  margin: 0;
+  color: rgba(0, 0, 0, 1);
+  font-weight: 700;
+}
+
+/* Buton grubu */
+.confirm__actions {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Turuncu, link stilinde ana aksiyon */
+.confirm__danger {
+  background: none;
+  border: none;
+  color: rgba(255, 77, 0, 1);
+  font-family: "CabinetGrotesk", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0.9;
+  padding: 0;
+}
+
+.confirm__danger:hover {
+  color: rgba(204, 61, 0, 1);
+  opacity: 1;
+}
+
+.confirm__danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.confirm__cancel {
+  background: none;
+  border: none;
+  font-family: "CabinetGrotesk", sans-serif;
+  color: rgba(0, 0, 0, 1);
+  font-weight: 700;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0.9;
+  padding: 0;
+}
+
+.confirm__cancel:hover {
+  opacity: 1;
+}

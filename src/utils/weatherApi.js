@@ -1,18 +1,16 @@
+// utils/weatherApi.js
+import { check } from "./api"; // gerekirse yolunu ayarla: "../utils/api" vs.
+
 export const getWeather = ({ latitude, longitude }, APIkey) => {
   return fetch(
     `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=imperial&appid=${APIkey}`
-  ).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return Promise.reject(`Error: ${res.status}`);
-    }
-  });
+  ).then(check); // DRY: ok/json ayrımını tek yerden yap
 };
 
 export const filterWeatherData = (data) => {
   const tempF = data.main.temp;
   const tempC = ((tempF - 32) * 5) / 9;
+
   return {
     city: data.name,
     temp: {
@@ -28,7 +26,6 @@ export const filterWeatherData = (data) => {
 const isDay = ({ sunrise, sunset }, now) => {
   const sunriseMs = sunrise * 1000;
   const sunsetMs = sunset * 1000;
-
   return sunriseMs < now && now < sunsetMs;
 };
 
