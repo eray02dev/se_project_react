@@ -1,27 +1,16 @@
 import { useState } from "react";
 import "./AddItemModal.css";
 
-function AddItemModal({ isOpen, onClose, onAddItem }) {
+function AddItemModal({ isOpen, onClose, onAddItem, isSaving = false }) {
   const [name, setName] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [weather, setWeather] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const newItem = {
-      name,
-      link: imageUrl,
-      weather,
-      _id: Math.random().toString(36).substr(2, 9),
-    };
-
-    onAddItem(newItem);
-    onClose();
-
-    setName("");
-    setImageUrl("");
-    setWeather("");
+    const newItem = { name, link: imageUrl, weather };
+    onAddItem(newItem); // POST işlemi parent’ta
+    // Not: Kapatmayı ve reset’i parent başarıdan sonra yapacak.
   };
 
   return (
@@ -93,8 +82,9 @@ function AddItemModal({ isOpen, onClose, onAddItem }) {
               Cold
             </label>
           </fieldset>
-          <button type="submit" className="modal__submit">
-            Add Garment
+
+          <button type="submit" className="modal__submit" disabled={isSaving}>
+            {isSaving ? "Saving..." : "Add Garment"}
           </button>
         </form>
       </div>

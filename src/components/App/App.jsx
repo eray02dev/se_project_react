@@ -10,7 +10,7 @@ import Profile from "../Profile/Profile";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import { CurrentTemperatureUnitProvider } from "../../contexts/CurrentTemperatureUnit";
 import { coordinates, APIkey } from "../../utils/constants";
-import { getItems } from "../../utils/api";
+import { getItems, addItem, deleteItem } from "../../utils/api";
 
 function App() {
   const [weatherData, setWeatherData] = useState({
@@ -24,20 +24,47 @@ function App() {
   const [clothingItems, setClothingItems] = useState([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleAddClick = () => setIsAddModalOpen(true);
   const closeActiveModal = () => setIsAddModalOpen(false);
 
   const handleAddItem = (newItem) => {
-    setClothingItems([newItem, ...clothingItems]);
+    // newItem: { name, link, weather }
+    setIsSaving(true);
+    // server shape: { name, imageUrl, weather }
+    const payload = {
+      name: newItem.name,
+      imageUrl: newItem.link,
+      weather: newItem.weather,
+    };
+
+    addItem(payload)
+      .then((saved) => {
+        // server returns { id, name, imageUrl, weather }
+        const clientShape = { ...saved, link: saved.imageUrl };
+        setClothingItems((prev) => [clientShape, ...prev]);
+        closeActiveModal();
+      })
+      .catch(console.error)
+      .finally(() => setIsSaving(false));
   };
 
-  const handleCardClick = (card) => {
-    setSelectedCard(card);
-  };
+  const handleCardClick = (card) => setSelectedCard(card);
+  const handleCloseCardModal = () => setSelectedCard(null);
 
-  const handleCloseCardModal = () => {
-    setSelectedCard(null);
+  const handleDeleteItem = (id) => {
+    setIsDeleting(true);
+    deleteItem(id)
+      .then(() => {
+        setClothingItems((prev) =>
+          prev.filter((it) => (it.id ?? it._id) !== id)
+        );
+        handleCloseCardModal();
+      })
+      .catch(console.error)
+      .finally(() => setIsDeleting(false));
   };
 
   useEffect(() => {
@@ -47,9 +74,10 @@ function App() {
 
     getItems()
       .then((data) => {
+        // server -> client shape mapping
         const fixedItems = data.map((item) => ({
           ...item,
-          link: item.imageUrl, // 👈 Bu satır kritik
+          link: item.imageUrl,
         }));
         setClothingItems(fixedItems);
       })
@@ -60,7 +88,6 @@ function App() {
     <CurrentTemperatureUnitProvider>
       <div className="page">
         <Header handleAddClick={handleAddClick} weatherData={weatherData} />
-
         <Routes>
           <Route
             path="/"
@@ -83,18 +110,24 @@ function App() {
             }
           />
         </Routes>
-
         <Footer />
+
         <AddItemModal
           isOpen={isAddModalOpen}
           onClose={closeActiveModal}
           onAddItem={handleAddItem}
+          isSaving={isSaving}
         />
+
         {selectedCard && (
           <ItemModal
             card={selectedCard}
             onClose={handleCloseCardModal}
             activeModal="preview"
+            onDelete={() =>
+              handleDeleteItem(selectedCard.id ?? selectedCard._id)
+            }
+            isDeleting={isDeleting}
           />
         )}
       </div>

@@ -38,49 +38,6 @@
   font-family: "CabinetGrotesk", sans-serif;
   font-size: 20px;
   font-weight: 700;
-
-  margin: 0;
-}
-.modal__content_type_image {
-  padding: 0;
-  max-width: 498px;
-  border-radius: 16px;
-  overflow: hidden;
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.modal__image {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.modal__footer {
-  width: 100%;
-  padding: 20px;
-  box-sizing: border-box;
-  background-color: #fff;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  align-items: flex-start;
-}
-
-.modal__caption {
-  font-family: "CabinetGrotesk", sans-serif;
-  font-size: 20px;
-  font-weight: 700;
-  margin: 0;
-}
-
-.modal__weather {
-  font-family: "CabinetGrotesk", sans-serif;
-  font-size: 20px;
-  font-weight: 700;
   margin: 0;
 }
 
