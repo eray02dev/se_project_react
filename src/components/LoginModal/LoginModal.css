@@ -1,0 +1,154 @@
+/* ---- Overlay ---- */
+.app-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+}
+
+/* ---- Card ---- */
+.app-modal__card {
+  width: 440px;
+  max-width: calc(100% - 32px);
+  background: #fff;
+  border-radius: 20px;
+  border: 1px solid #0000004d;
+  padding: 28px 28px 36px;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* Title */
+.app-modal__card .app-modal__title {
+  margin: 0 0 12px;
+  font-family: "CabinetGrotesk", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* Close (sağ üst) */
+.app-modal__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border: 0;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+/* Field + labels (SCOPED) */
+.app-modal__card .field {
+  display: block;
+  margin: 24px 0 0;
+}
+.app-modal__card .field__label {
+  display: block;
+  font-family: "CabinetGrotesk", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* Inputs (SCOPED) */
+.app-modal__card .input {
+  width: 100%;
+  max-width: 440px;
+  height: 24px;
+  line-height: 24px;
+  background: transparent;
+  outline: none;
+  font-size: 14px;
+  padding: 0;
+  border: none;
+}
+.app-modal__card .input--underline {
+  border-bottom: 1px solid #000;
+  border-radius: 0;
+  box-shadow: none;
+}
+.app-modal__card .input--underline:focus {
+  border-bottom-color: #000;
+  box-shadow: none;
+  background: transparent;
+}
+.app-modal__card .input::placeholder {
+  color: #9ca3af;
+}
+.app-modal__card .input--error {
+  border-bottom-color: #e74c3c !important;
+}
+.app-modal__card .form-error {
+  color: #e74c3c;
+  margin: 8px 0 0;
+  font-size: 12px;
+}
+
+/* Actions (SCOPED) */
+.app-modal__card .modal__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+/* Button */
+.app-modal__card .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 73px;
+  height: 36px;
+  padding: 8px 16px;
+  gap: 8px;
+  border: 0;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1;
+  color: #fff;
+  cursor: pointer;
+}
+.app-modal__card .button--muted {
+  background: rgba(0, 0, 0, 0.3);
+  transition: background 0.2s ease;
+}
+.app-modal__card .button--muted:enabled:hover {
+  background: #000;
+}
+.app-modal__card .button--muted:disabled {
+  opacity: 1;
+  cursor: default;
+}
+
+/* 'or' ve link */
+.app-modal__card .sep {
+  font-family: "CabinetGrotesk", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #00000080;
+  line-height: 20px;
+}
+.app-modal__card .link_button {
+  background: none;
+  border: none;
+  color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  font-family: "CabinetGrotesk", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 100%;
+  text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 520px) {
+  .app-modal__card {
+    padding: 20px;
+    border-radius: 16px;
+  }
+}

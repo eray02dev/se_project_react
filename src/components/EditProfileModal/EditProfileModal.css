@@ -1,0 +1,119 @@
+/* Overlay */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+}
+.modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Kart ölçüsü ve iç boşluk */
+.modal__card {
+  width: 496px; /* sabit genişlik */
+  height: 304px; /* sabit yükseklik */
+  background: #fff;
+  border-radius: 12px;
+  padding: 28px 28px 36px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  position: relative;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* içerik üstte, buton altta */
+}
+
+/* Başlık */
+.modal__title {
+  margin: 0 0 24px; /* başlık–ilk input: 24px */
+  font-family: "CabinetGrotesk", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #111827;
+}
+
+/* Alan grubu */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px; /* iki alan arası: 24px */
+}
+
+/* Etiket ve yıldız */
+.field__label {
+  font-family: "CabinetGrotesk", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: #111827;
+}
+.field.required .field__label::after {
+  content: " *";
+  color: #111827;
+}
+
+/* Input: underline */
+.input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 0;
+  border-bottom: 1.5px solid #111;
+
+  background: transparent;
+  font-family: "CabinetGrotesk", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+}
+.input:focus {
+  outline: none;
+  border-bottom-color: #000;
+}
+.input--error {
+  border-bottom-color: #e74c3c;
+  background: #fff5f5;
+}
+
+/* Buton alanı – alttan 36px boşluk */
+.modal__actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 8px;
+  margin-bottom: 36px; /* istenen boşluk */
+}
+
+/* Primary button */
+.button {
+  min-width: 128px;
+  height: 36px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 4px;
+  background: #000;
+  color: #fff;
+  font-family: "CabinetGrotesk", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+}
+.button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Close (X) */
+.modal__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: none;
+  border: 0;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}

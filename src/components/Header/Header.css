@@ -1,48 +1,105 @@
+/* Genel çubuk */
 .header {
   display: flex;
   align-items: center;
-  padding: 32px 0 28px;
+  justify-content: space-between; /* solda/sağda iki blok */
+  padding: 24px 27px;
   font-family: "CabinetGrotesk", sans-serif;
   font-weight: 700;
 }
-.header__logo {
-  margin-right: 24px;
+
+/* Sol blok: logo + tarih/şehir */
+.header__left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
+
+.header__logo {
+  display: block;
+}
+.header__logo-link {
+  display: inline-flex;
+  align-items: center;
+}
+
 .header__date-and-location {
   margin: 0;
+  font: 700 20px/1 "CabinetGrotesk", sans-serif;
 }
+
+/* Sağ blok: toggle + (logged) add + user  /  (guest) auth linkler */
+.header__right {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Toggle ile diğerleri arasında boşluk */
+}
+
+/* “+ Add clothes” */
 .header__add-clothes-btn {
   background: none;
   border: none;
   padding: 0;
-  margin: 0 20px 0 auto;
-  font-family: "CabinetGrotesk", sans-serif;
-  font-weight: 700;
-  font-size: 16px;
-  color: black;
+  font: 700 20px/1 "CabinetGrotesk", sans-serif;
+  color: #000;
   cursor: pointer;
 }
 
-.header__user-container {
+/* Kullanıcı butonu (isim + avatar) */
+.header__user {
   display: flex;
   align-items: center;
   gap: 12px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
+
 .header__username {
+  font-family: "CabinetGrotesk", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
   margin: 0;
 }
-.header__nav {
+
+/* Avatar */
+.header__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.header__avatar--placeholder {
+  display: grid;
+  place-items: center;
+  background: #111;
+  color: #fff;
+  font-size: 14px;
+}
+
+/* Guest linkleri (Header içi tipografi) */
+.header__auth {
   display: flex;
-  gap: 20px;
-  margin-right: 20px;
+  align-items: center;
+  gap: 24px; /* Sign Up ve Log In arası 24px */
 }
 
+/* Header’a özel link stili (diğer .link’lerle çakışmasın) */
 .header__link {
-  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #000; /* siyah */
+  font-family: "CabinetGrotesk", sans-serif;
   font-weight: 700;
-  color: black;
-}
-
-.header__link.active {
+  font-size: 20px; /* taslaktaki gibi büyük */
+  line-height: 1;
+  letter-spacing: 0;
   text-decoration: none;
+  padding: 0;
+}
+.header__link:hover {
+  opacity: 0.8;
 }

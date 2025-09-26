@@ -1,0 +1,10 @@
+.profile__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(325px, 325px));
+  gap: 24px;
+
+  /* ← kaydıran varsayılanlar */
+  list-style: none;
+  margin: 16px 0 0; /* isteğe göre */
+  padding: 0; /* asıl kritik satır */
+}

@@ -1,8 +1,10 @@
+/* kart listesi yerleşimi */
 .cards__list {
-  display: flex;
-  flex-wrap: wrap;
+  list-style: none;
   margin: 0;
   padding: 0;
-  list-style-type: none;
-  gap: 21px;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(323px, 1fr));
+  gap: 21px; /* önceki gap’i koruduk */
 }

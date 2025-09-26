@@ -2,43 +2,92 @@ import "./Header.css";
 import { NavLink } from "react-router-dom";
 import ToggleSwitch from "../ToggleSwitch/ToggleSwitch";
 import logo from "../../assets/logo.svg";
-import avatar from "../../assets/avatar.png";
 
-function Header({ handleAddClick, weatherData }) {
+function Header({
+  handleAddClick,
+  weatherData,
+  isLoggedIn,
+  currentUser,
+  onOpenLogin,
+  onOpenRegister,
+  onGoProfile,
+}) {
   const currentDate = new Date().toLocaleString("default", {
     month: "long",
     day: "numeric",
   });
 
+  const renderUserAvatar = () => {
+    if (currentUser?.avatar) {
+      return (
+        <img
+          src={currentUser.avatar}
+          alt={currentUser?.name || "User avatar"}
+          className="header__avatar"
+        />
+      );
+    }
+    const letter = currentUser?.name?.[0]?.toUpperCase() || "U";
+    return (
+      <div className="header__avatar header__avatar--placeholder">{letter}</div>
+    );
+  };
+
   return (
     <header className="header">
-      {/* ✅ Logo artık NavLink içinde */}
-      <NavLink to="/" className="header__logo-link">
-        <img src={logo} alt="WTWR logo" className="header__logo" />
-      </NavLink>
-
-      <p className="header__date-and-location">
-        {currentDate}, {weatherData.city}
-      </p>
-
-      <ToggleSwitch />
-
-      <button
-        onClick={handleAddClick}
-        type="button"
-        className="header__add-clothes-btn"
-      >
-        + Add clothes
-      </button>
-
-      <nav className="header__nav">
-        <NavLink to="/profile" className="header__link">
-          <div className="header__user-container">
-            <p className="header__username">Terrence Tegegne</p>
-            <img src={avatar} alt="User avatar" className="header__avatar" />
-          </div>
+      {/* LEFT */}
+      <div className="header__left">
+        <NavLink to="/" className="header__logo-link" aria-label="Home">
+          <img src={logo} alt="WTWR logo" className="header__logo" />
         </NavLink>
-      </nav>
+        <p className="header__date-and-location">
+          {currentDate}, {weatherData.city}
+        </p>
+      </div>
+
+      {/* RIGHT */}
+      <div className="header__right">
+        <ToggleSwitch />
+
+        {isLoggedIn ? (
+          <>
+            <button
+              onClick={handleAddClick}
+              type="button"
+              className="header__add-clothes-btn"
+            >
+              + Add clothes
+            </button>
+
+            <button
+              type="button"
+              onClick={onGoProfile}
+              className="header__user"
+              aria-label="Open profile"
+            >
+              <span className="header__username">{currentUser?.name}</span>
+              {renderUserAvatar()}
+            </button>
+          </>
+        ) : (
+          <nav className="header__auth">
+            <button
+              type="button"
+              className="header__link"
+              onClick={onOpenRegister}
+            >
+              Sign Up
+            </button>
+            <button
+              type="button"
+              className="header__link"
+              onClick={onOpenLogin}
+            >
+              Log In
+            </button>
+          </nav>
+        )}
+      </div>
     </header>
   );
 }

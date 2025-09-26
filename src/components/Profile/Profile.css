@@ -1,80 +1,80 @@
+/* ------------------ Layout ------------------ */
 .profile {
-  padding: 20px;
+  max-width: 1400px;
+
+  padding: 24px 0px 40px;
+
+  display: flex; /* sol: sidebar | sağ: içerik */
+  align-items: flex-start;
+  gap: 40px; /* sidebar–content boşluğu */
 }
 
-.profile__container {
-  display: flex;
-
-  margin: 0 auto;
-  gap: 40px;
+/* Sol panel (SideBar kökünde className="sidebar" olduğundan burayı hedefliyoruz) */
+.profile > .sidebar {
+  width: 260px;
+  flex: 0 0 260px;
+  min-width: 220px;
 }
 
-/* Sol: Avatar + isim YAN YANA */
-.profile__user {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  white-space: nowrap;
-  height: max-content;
+/* Sağ alan */
+.profile__content {
+  flex: 1;
+  min-width: 0; /* taşmaları düzgün kırp */
 }
 
-.profile__avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.5);
-}
-
-.profile__name {
-  font-family: "CabinetGrotesk", sans-serif;
-  font-weight: 700;
-  font-size: 20px;
-  margin: 0;
-  line-height: 1;
-}
-
-/* Sağ: Header + kartlar */
-.profile__main {
-  flex-grow: 1;
-  width: 100%;
-  margin-top: 28px;
-}
-
-/* Your items ve add button YAN YANA */
+/* ------------------ Header (title + add) ------------------ */
 .profile__top {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 20px;
-  margin-bottom: 20px;
+  align-items: center; /* metinle buton aynı hizada */
+  column-gap: 12px; /* title ile buton arası */
+  row-gap: 8px; /* dar ekranda alt satıra inerse dikey boşluk */
+  flex-wrap: wrap; /* dar alanda alt satıra geçebilsin */
+  margin-bottom: 16px;
 }
 
 .profile__items-title {
-  font-family: "CabinetGrotesk", sans-serif;
-  font-weight: 700;
-  font-size: 20px;
   margin: 0;
-}
-
-.profile__add-btn {
   font-family: "CabinetGrotesk", sans-serif;
   font-weight: 700;
-  font-size: 20px;
-  color: #6c6c6c;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  outline: none;
+  font-size: 18px;
+  line-height: 20px;
 }
 
-/* Kartlar */
-.profile__cards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  gap: 20px;
-  margin-top: 20px;
+/* “+ Add new” link stili */
+.profile__add-btn {
+  appearance: none;
+  background: transparent; /* arka plan yok */
+  border: 0;
   padding: 0;
+  margin: 0;
+
+  font-family: "CabinetGrotesk", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  color: #000;
+  cursor: pointer;
+  white-space: nowrap; /* tek satırda kalsın */
+}
+
+.profile__add-btn:hover {
+  text-decoration: underline;
+}
+
+/* ------------------ Responsive ------------------ */
+@media (max-width: 768px) {
+  .profile {
+    flex-direction: column; /* sidebar üstte, içerik altta */
+    gap: 24px;
+  }
+
+  .profile > .sidebar {
+    width: 100%;
+    flex: none;
+  }
+
+  .profile__top {
+    column-gap: 12px;
+    row-gap: 8px;
+  }
 }

@@ -1,0 +1,164 @@
+/* src/components/RegisterModal/RegisterModal.css */
+
+/* Arka plan (overlay) */
+.register-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+}
+
+/* Kart */
+.register-card {
+  position: relative; /* close butonu için */
+  width: 496px; /* hedef görsel genişliği hissi */
+  max-width: 92vw;
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px 28px 24px 28px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  font-family: "CabinetGrotesk", system-ui, -apple-system, Segoe UI, Roboto,
+    sans-serif;
+}
+
+/* Başlık */
+.register-title {
+  margin: 0 0 18px 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* Sağ üst X butonu */
+.register-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: none;
+  border-radius: 9999px;
+  font-size: 24px;
+  line-height: 36px;
+  text-align: center;
+  color: #9ca3af; /* gri ikon */
+  cursor: pointer;
+}
+.register-close:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #6b7280;
+}
+.register-close:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Field */
+.register-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 22px;
+}
+
+/* Label */
+.register-label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #111827;
+}
+
+/* Input: yalnızca alt çizgi */
+.register-input {
+  border: none;
+
+  border-bottom: 1px solid rgba(0, 0, 0, 1); /* ince siyah çizgi */
+  padding: 8px 0;
+  font-size: 14px;
+  outline: none;
+  background: transparent;
+}
+.register-input:focus {
+  border-bottom: 2px solid #111; /* odakta kalınlaşıyor */
+}
+.register-input::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+/* Hata durumu */
+.register-input--error {
+  border-bottom-color: #e74c3c;
+}
+.register-error {
+  color: #e74c3c;
+  margin: -8px 0 12px;
+  font-size: 12px;
+}
+
+/* Alt aksiyonlar */
+.register-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+/* Submit */
+.register-button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  color: rgba(255, 255, 255, 1);
+  cursor: pointer;
+  font-family: "CabinetGrotesk", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  transition: background 0.2s ease;
+}
+.register-button:hover {
+  background: rgba(0, 0, 0, 1);
+}
+.register-button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* "or Log In" metni */
+.register-or {
+  color: #6b7280;
+  font-size: 16px;
+}
+.register-login-hint {
+  color: #6b7280;
+  font-size: 14px;
+}
+.register-login-link {
+  background: none;
+  border: none;
+  color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  padding: 0;
+
+  font-family: "CabinetGrotesk", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 100%;
+  text-decoration: none;
+}
+
+.register-login-link:hover {
+  color: rgba(0, 0, 0, 1);
+}
+
+/* Küçük ekran iyileştirme */
+@media (max-width: 420px) {
+  .register-card {
+    padding: 20px;
+    width: 100%;
+  }
+}

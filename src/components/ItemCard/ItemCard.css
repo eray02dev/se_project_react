@@ -1,34 +1,89 @@
+/* Kart boyutu (briefe uygun) */
 .card {
-  width: 323px;
+  width: 325px;
+  height: 328px;
   position: relative;
-  display: flex;
-  justify-content: center;
+  border-radius: 20px;
+  background: #efefef;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  overflow: hidden;
 }
 
-.card__name {
+/* Üst bant: ortalanmış isim + kalp */
+.card__top {
   position: absolute;
-  top: 15px;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* İsim etiketi */
+.card__name {
   margin: 0;
   padding: 2px 12px 0;
   font-family: "CabinetGrotesk", sans-serif;
   color: rgba(0, 0, 0, 0.6);
   font-weight: 700;
   font-size: 16px;
-  background: rgba(255, 255, 255, 1);
-  border-radius: 4px;
+  background: #fff;
+  border-radius: 6px;
+  line-height: 24px;
+  white-space: nowrap;
+}
 
-  display: flex;
+/* Kalp butonu */
+.card__like-btn {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-
-  min-height: 24px;
-  line-height: normal;
 }
+.card__like-btn[disabled] {
+  cursor: default;
+  pointer-events: auto; /* tooltip/title çalışsın */
+}
+.card__like-icon {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: #666;
+  stroke-width: 1.8;
+}
+
+/* aktifken içi siyah */
+.card__like-btn_active .card__like-icon {
+  fill: #000;
+  stroke: #000;
+}
+
+/* Görsel yerleşimi */
 .card__image {
   width: 100%;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  border-radius: 15px;
+  height: 100%;
+  object-fit: contain; /* 🔹 taşma yok, tam sığdırır */
+  border-radius: 8px; /* istersen kenar yuvarlatma */
+  display: block;
 }
+
+/* Liste düzeni */
+.cards__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 21px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* Başlık */
 .cards__text {
   font-family: "CabinetGrotesk", sans-serif;
   font-weight: 700;

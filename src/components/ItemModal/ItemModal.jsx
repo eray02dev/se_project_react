@@ -4,15 +4,25 @@ function ItemModal({
   activeModal,
   onClose,
   card,
-  onRequestDelete, // ← yeni isim
+  onRequestDelete,
   isDeleting = false,
+  // 🆕 Sprint 14: sahiplik kontrolü için currentUser
+  currentUser,
 }) {
   if (!card) return null;
 
+  const isOpen = activeModal === "preview";
+  const isOwn = card?.owner === currentUser?._id; // sadece owner silsin
+
   return (
-    <div className={`modal ${activeModal === "preview" ? "modal_opened" : ""}`}>
+    <div className={`modal ${isOpen ? "modal_opened" : ""}`}>
       <div className="modal__content modal__content_type_image">
-        <button onClick={onClose} type="button" className="modal__close">
+        <button
+          onClick={onClose}
+          type="button"
+          className="modal__close"
+          aria-label="Close preview"
+        >
           x
         </button>
 
@@ -21,14 +31,20 @@ function ItemModal({
         <div className="modal__footer">
           <div className="modal__footer-top">
             <h2 className="modal__caption">{card.name}</h2>
-            <button
-              className="modal__delete-text"
-              onClick={onRequestDelete}
-              disabled={isDeleting}
-            >
-              {isDeleting ? "Deleting..." : "Delete item"}
-            </button>
+
+            {/* 🆕 Delete sadece owner'a görünür */}
+            {isOwn && (
+              <button
+                className="modal__delete-text"
+                onClick={onRequestDelete}
+                disabled={isDeleting}
+                aria-label="Delete item"
+              >
+                {isDeleting ? "Deleting..." : "Delete item"}
+              </button>
+            )}
           </div>
+
           <p className="modal__weather">Weather: {card.weather}</p>
         </div>
       </div>
