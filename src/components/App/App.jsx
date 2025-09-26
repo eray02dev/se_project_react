@@ -22,7 +22,12 @@ import { CurrentTemperatureUnitProvider } from "../../contexts/CurrentTemperatur
 // current user context
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-import { coordinates, APIkey } from "../../utils/constants";
+// ✅ constants importları: apiKey ve defaultClothingItems eklendi
+import {
+  coordinates,
+  apiKey,
+  defaultClothingItems,
+} from "../../utils/constants";
 
 // API katmanı
 import {
@@ -52,7 +57,9 @@ function App() {
   });
 
   // ---- Items / modals ----
-  const [clothingItems, setClothingItems] = useState([]);
+  // ✅ 1) defaultClothingItems ile seed edildi
+  const [clothingItems, setClothingItems] = useState(defaultClothingItems);
+
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
 
@@ -67,9 +74,10 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // ---- Auth modals state ----
-  const [openLogin, setOpenLogin] = useState(false);
-  const [openRegister, setOpenRegister] = useState(false);
-  const [openEditProfile, setOpenEditProfile] = useState(false);
+  // ✅ 2) Boolean state adları isXOpen şeklinde
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
 
   // ---- UI feedback ----
   const [busyLogin, setBusyLogin] = useState(false);
@@ -81,7 +89,8 @@ function App() {
   const navigate = useNavigate();
 
   // Helpers
-  const token = () => localStorage.getItem("jwt");
+  // ✅ 3) token() -> getToken()
+  const getToken = () => localStorage.getItem("jwt");
 
   const handleAddClick = () => setIsAddModalOpen(true);
   const closeActiveModal = () => setIsAddModalOpen(false);
@@ -99,18 +108,19 @@ function App() {
 
   // --- Edit modal handlers (loglu)
   const handleOpenEdit = () => {
-    console.log("[App] set openEditProfile = true");
-    setOpenEditProfile(true);
+    console.log("[App] set isEditProfileOpen = true");
+    setIsEditProfileOpen(true);
   };
   const handleCloseEdit = () => {
-    console.log("[App] set openEditProfile = false");
-    setOpenEditProfile(false);
+    console.log("[App] set isEditProfileOpen = false");
+    setIsEditProfileOpen(false);
   };
 
   // ---------- Effects: initial fetch ----------
   useEffect(() => {
     // weather
-    getWeather(coordinates, APIkey)
+    // ✅ APIkey -> apiKey
+    getWeather(coordinates, apiKey)
       .then((data) => setWeatherData(filterWeatherData(data)))
       .catch(console.error);
 
@@ -123,7 +133,7 @@ function App() {
       .catch(console.error);
 
     // token check → user
-    const t = token();
+    const t = getToken();
     if (t) {
       checkToken(t)
         .then((user) => {
@@ -147,7 +157,7 @@ function App() {
       weather: newItem.weather,
     };
 
-    addItem(payload, token())
+    addItem(payload, getToken())
       .then((saved) => {
         const clientShape = { ...saved, link: saved.imageUrl };
         setClothingItems((prev) => [clientShape, ...prev]);
@@ -161,7 +171,7 @@ function App() {
     if (!pendingDeleteId) return;
     setIsDeleting(true);
 
-    deleteItem(pendingDeleteId, token())
+    deleteItem(pendingDeleteId, getToken())
       .then(() => {
         setClothingItems((prev) =>
           prev.filter((it) => (it.id ?? it._id) !== pendingDeleteId)
@@ -174,7 +184,7 @@ function App() {
   };
 
   const handleCardLike = ({ id, isLiked }) => {
-    const t = token();
+    const t = getToken();
     if (!t) return;
 
     const req = isLiked ? removeCardLike(id, t) : addCardLike(id, t);
@@ -202,7 +212,7 @@ function App() {
       .then((user) => {
         setCurrentUser(user);
         setIsLoggedIn(true);
-        setOpenLogin(false);
+        setIsLoginOpen(false); // ✅
       })
       .catch(() => setErrLogin("1"))
       .finally(() => setBusyLogin(false));
@@ -220,7 +230,7 @@ function App() {
       .then((user) => {
         setCurrentUser(user);
         setIsLoggedIn(true);
-        setOpenRegister(false);
+        setIsRegisterOpen(false); // ✅
       })
       .catch(() => setErrRegister("1"))
       .finally(() => setBusyRegister(false));
@@ -236,10 +246,10 @@ function App() {
   // ---------- Profile edit ----------
   const handleUpdateProfile = ({ name, avatar }) => {
     setBusyEdit(true);
-    updateUser({ name, avatar }, token())
+    updateUser({ name, avatar }, getToken())
       .then((usr) => {
         setCurrentUser(usr);
-        setOpenEditProfile(false);
+        setIsEditProfileOpen(false); // ✅
       })
       .catch(console.error)
       .finally(() => setBusyEdit(false));
@@ -254,11 +264,10 @@ function App() {
             weatherData={weatherData}
             isLoggedIn={isLoggedIn}
             currentUser={currentUser}
-            onOpenLogin={() => setOpenLogin(true)}
-            onOpenRegister={() => setOpenRegister(true)}
+            onOpenLogin={() => setIsLoginOpen(true)} // ✅
+            onOpenRegister={() => setIsRegisterOpen(true)} // ✅
             onGoProfile={() => navigate("/profile")}
           />
-
           <Routes>
             <Route
               path="/"
@@ -291,9 +300,7 @@ function App() {
               }
             />
           </Routes>
-
           <Footer />
-
           {/* Add Item */}
           <AddItemModal
             isOpen={isAddModalOpen}
@@ -301,7 +308,6 @@ function App() {
             onAddItem={handleAddItem}
             isSaving={isSaving}
           />
-
           {/* Preview modal */}
           {selectedCard && (
             <ItemModal
@@ -313,7 +319,6 @@ function App() {
               currentUser={currentUser}
             />
           )}
-
           {/* Delete confirm */}
           <ConfirmDeleteModal
             isOpen={isConfirmOpen}
@@ -321,26 +326,24 @@ function App() {
             onConfirm={handleConfirmDelete}
             isDeleting={isDeleting}
           />
-
           {/* Auth modals */}
           <LoginModal
-            isOpen={openLogin}
-            onClose={() => setOpenLogin(false)}
+            isOpen={isLoginOpen} // ✅
+            onClose={() => setIsLoginOpen(false)} // ✅
             onSubmit={handleLogin}
             busy={busyLogin}
             error={!!errLogin}
           />
           <RegisterModal
-            isOpen={openRegister}
-            onClose={() => setOpenRegister(false)}
+            isOpen={isRegisterOpen} // ✅
+            onClose={() => setIsRegisterOpen(false)} // ✅
             onSubmit={handleRegister}
             busy={busyRegister}
             error={!!errRegister}
           />
-
           {/* Edit profile */}
           <EditProfileModal
-            isOpen={openEditProfile}
+            isOpen={isEditProfileOpen} // ✅
             onClose={handleCloseEdit}
             onSubmit={handleUpdateProfile}
             initial={{

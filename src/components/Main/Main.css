@@ -1,4 +1,17 @@
-/* kart listesi yerleşimi */
+/* Main.css — cards bloğu */
+.cards {
+  /* istersen section spacing */
+}
+
+.cards__text {
+  font-family: "CabinetGrotesk", sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 100%;
+  margin-top: 40px;
+  margin-bottom: 34px;
+}
+
 .cards__list {
   list-style: none;
   margin: 0;
@@ -6,5 +19,5 @@
 
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(323px, 1fr));
-  gap: 21px; /* önceki gap’i koruduk */
+  gap: 21px;
 }
