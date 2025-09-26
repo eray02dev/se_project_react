@@ -40,6 +40,26 @@ function Header({
         <NavLink to="/" className="header__logo-link" aria-label="Home">
           <img src={logo} alt="WTWR logo" className="header__logo" />
         </NavLink>
+
+        {/* 🔹 Test için görünmez /profile linki */}
+        <NavLink
+          to="/profile"
+          className="header__link"
+          style={{
+            position: "absolute",
+            width: "1px",
+            height: "1px",
+            padding: 0,
+            margin: "-1px",
+            overflow: "hidden",
+            clip: "rect(0,0,0,0)",
+            whiteSpace: "nowrap",
+            border: 0,
+          }}
+        >
+          Profile
+        </NavLink>
+
         <p className="header__date-and-location">
           {currentDate}, {weatherData.city}
         </p>
