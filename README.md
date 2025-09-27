@@ -14,11 +14,11 @@ This is the front-end of the WTWR project — a React + Vite application that le
 ## Backend Repository
 
 The backend code for this project can be found here:  
-[se_project_express](https://github.com/<your-username>/se_project_express)
+[se_project_express](https://github.com/eray02dev/se_project_express)
 
 You can download and run the backend with **Express** and **MongoDB** by following the instructions in that repository.
 
 ## Deployment
 
-- Frontend: https://<your-frontend-url>.vercel.app
+- Frontend: https://eray02dev.github.io/se_project_react/
 - Backend API: https://<your-backend-url>.onrender.com
