@@ -21,4 +21,4 @@ You can download and run the backend with **Express** and **MongoDB** by followi
 ## Deployment
 
 - Frontend: https://eray02dev.github.io/se_project_react/
-- Backend API: https://<your-backend-url>.onrender.com
+- Backend API: https://github.com/eray02dev/se_project_express.git
