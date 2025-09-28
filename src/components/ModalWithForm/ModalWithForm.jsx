@@ -2,8 +2,10 @@ import React from "react";
 
 /**
  * Ortak modal form bileşeni.
- * Login / Register gibi form içeren tüm modallar bunu kullansın.
- * Stil için mevcut LoginModal.css sınıflarını (app-modal, app-modal__card, modal__actions) kullanır.
+ * Login / Register / AddItem gibi form içeren tüm modallar bunu kullanır.
+ *
+ * - `actions` verilirse aynen basılır.
+ * - `actions` verilmezse, `buttonText` ile default submit butonu render edilir.
  */
 export default function ModalWithForm({
   isOpen,
@@ -11,8 +13,10 @@ export default function ModalWithForm({
   title,
   onSubmit,
   children,
-  actions, // footer düğmeleri
-  ariaLabel, // erişilebilirlik etiketi
+  actions, // özel footer düğmeleri (opsiyonel)
+  ariaLabel, // erişilebilirlik etiketi (opsiyonel)
+  buttonText, // default submit butonu metni (opsiyonel)
+  submitDisabled = false, // default submit butonu için disabled durumu
 }) {
   React.useEffect(() => {
     if (!isOpen) return;
@@ -50,7 +54,20 @@ export default function ModalWithForm({
 
         {children}
 
-        {actions && <div className="modal__actions">{actions}</div>}
+        {/* Footer */}
+        {actions ? (
+          <div className="modal__actions">{actions}</div>
+        ) : buttonText ? (
+          <div className="modal__actions">
+            <button
+              type="submit"
+              className="modal__submit"
+              disabled={submitDisabled}
+            >
+              {buttonText}
+            </button>
+          </div>
+        ) : null}
       </form>
     </div>
   );

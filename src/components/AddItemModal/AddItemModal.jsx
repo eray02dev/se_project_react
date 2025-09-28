@@ -13,13 +13,17 @@ function AddItemModal({ isOpen, onClose, onAddItem, isSaving = false }) {
     onAddItem(newItem);
   };
 
+  // Form doğrulaması: tüm alanlar dolu olursa aktif
+  const isValid = name.trim() && imageUrl.trim() && weather;
+
   return (
     <ModalWithForm
       isOpen={isOpen}
-      title="Add New Clothing"
+      title="New garment"
       onClose={onClose}
       onSubmit={handleSubmit}
-      buttonText={isSaving ? "Saving..." : "Add Garment"}
+      buttonText={isSaving ? "Saving..." : "Add garment"}
+      submitDisabled={!isValid || isSaving}
     >
       <label className="modal__label">
         Name
@@ -48,7 +52,7 @@ function AddItemModal({ isOpen, onClose, onAddItem, isSaving = false }) {
       </label>
 
       <fieldset className="modal__radio-buttons">
-        <legend className="modal__legend">Weather</legend>
+        <legend className="modal__legend">Select the weather type:</legend>
 
         <label className="modal__label_type_radio">
           <input

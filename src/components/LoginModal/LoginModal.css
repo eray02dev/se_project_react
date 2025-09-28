@@ -18,6 +18,9 @@
   padding: 28px 28px 36px;
   position: relative;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  font-family: "CabinetGrotesk", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 /* Title */
