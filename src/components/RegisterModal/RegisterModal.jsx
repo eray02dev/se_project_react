@@ -1,4 +1,5 @@
 import React from "react";
+import "./RegisterModal.css";
 import "../LoginModal/LoginModal.css"; // aynı modal stillerini paylaş
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
