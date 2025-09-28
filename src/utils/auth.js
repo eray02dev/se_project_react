@@ -1,11 +1,7 @@
-export const baseUrl = "http://localhost:3001";
+// src/utils/auth.js
+import { baseUrl, check } from "./api";
 
-export const check = (res) => {
-  if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-  return res.json();
-};
-
-// kullanıcı kaydı (signup)
+// Sign Up
 export function register({ name, avatar, email, password }) {
   return fetch(`${baseUrl}/signup`, {
     method: "POST",
@@ -14,7 +10,7 @@ export function register({ name, avatar, email, password }) {
   }).then(check);
 }
 
-// kullanıcı girişi (signin)
+// Log In
 export function login({ email, password }) {
   return fetch(`${baseUrl}/signin`, {
     method: "POST",
@@ -23,10 +19,9 @@ export function login({ email, password }) {
   }).then(check);
 }
 
-// token geçerliliği kontrol (me)
+// Token doğrula / kullanıcıyı al
 export function checkToken(token) {
   return fetch(`${baseUrl}/users/me`, {
-    method: "GET",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,

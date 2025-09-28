@@ -1,5 +1,6 @@
 import React from "react";
-import "./RegisterModal.css";
+import "../LoginModal/LoginModal.css"; // aynı modal stillerini paylaş
+import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
 export default function RegisterModal({
   isOpen,
@@ -7,7 +8,7 @@ export default function RegisterModal({
   onSubmit,
   busy,
   error,
-  onShowLogin, // opsiyonel: login modalını açtırmak için
+  onShowLogin, // Login modala geçiş
 }) {
   const [form, setForm] = React.useState({
     email: "",
@@ -16,15 +17,10 @@ export default function RegisterModal({
     avatar: "",
   });
 
-  // Açılınca formu temizle + ESC ile kapanış
   React.useEffect(() => {
     if (!isOpen) return;
     setForm({ email: "", password: "", name: "", avatar: "" });
-
-    const onEsc = (e) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", onEsc);
-    return () => window.removeEventListener("keydown", onEsc);
-  }, [isOpen, onClose]);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -37,129 +33,105 @@ export default function RegisterModal({
     form.name.trim() &&
     form.avatar.trim();
 
-  const submit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(form); // { email, password, name, avatar }
+    onSubmit?.(form);
   };
 
-  const showLogin = onShowLogin || (() => {});
-
   return (
-    <div
-      className="register-modal"
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Sign Up"
-    >
-      <form
-        className="register-card"
-        onClick={(e) => e.stopPropagation()}
-        onSubmit={submit}
-        noValidate
-      >
-        <button
-          type="button"
-          aria-label="Close"
-          className="register-close"
-          onClick={onClose}
-          disabled={busy}
-        >
-          ✕
-        </button>
-
-        <h3 className="register-title">Sign Up</h3>
-
-        <label className="register-field" htmlFor="reg-email">
-          <span className="register-label">Email*</span>
-          <input
-            id="reg-email"
-            className={`register-input ${error ? "register-input--error" : ""}`}
-            name="email"
-            type="email"
-            value={form.email}
-            onChange={handle}
-            placeholder="Email"
-            required
-            autoComplete="email"
-          />
-        </label>
-
-        <label className="register-field" htmlFor="reg-password">
-          <span className="register-label">Password*</span>
-          <input
-            id="reg-password"
-            className={`register-input ${error ? "register-input--error" : ""}`}
-            name="password"
-            type="password"
-            value={form.password}
-            onChange={handle}
-            placeholder="Password"
-            required
-            autoComplete="new-password"
-          />
-        </label>
-
-        <label className="register-field" htmlFor="reg-name">
-          <span className="register-label">Name*</span>
-          <input
-            id="reg-name"
-            className="register-input"
-            name="name"
-            value={form.name}
-            onChange={handle}
-            placeholder="Name"
-            required
-            autoComplete="name"
-          />
-        </label>
-
-        <label className="register-field" htmlFor="reg-avatar">
-          <span className="register-label">Avatar URL*</span>
-          <input
-            id="reg-avatar"
-            className="register-input"
-            name="avatar"
-            value={form.avatar}
-            onChange={handle}
-            placeholder="Avatar URL"
-            autoComplete="url"
-            required // ← zorunlu oldu
-          />
-        </label>
-
-        {error && (
-          <p className="register-error">
-            Could not sign up. Check your inputs or try another email.
-          </p>
-        )}
-
-        <div className="register-actions">
+    <ModalWithForm
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Sign Up"
+      ariaLabel="Sign Up"
+      onSubmit={handleSubmit}
+      actions={
+        <>
           <button
-            className="register-button"
+            className="button button--muted"
             disabled={!filled || busy}
             type="submit"
           >
             {busy ? "Signing up..." : "Sign Up"}
           </button>
-
-          <span className="register-or">or</span>
-
-          {/* Log In: link-style */}
+          <span className="sep">or</span>
           <button
+            className="link_button"
             type="button"
-            className="register-login-link"
             onClick={() => {
-              onClose(); // Register modalı kapat
-              showLogin(); // Parent’tan login modalını açtır (varsa)
+              onClose?.();
+              onShowLogin?.(); // ➜ Login modalını aç
             }}
             disabled={busy}
-            aria-label="Open Log In"
           >
             Log In
           </button>
-        </div>
-      </form>
-    </div>
+        </>
+      }
+    >
+      <label className="field" htmlFor="reg-email">
+        <span className="field__label">Email*</span>
+        <input
+          id="reg-email"
+          className={`input input--underline ${error ? "input--error" : ""}`}
+          name="email"
+          type="email"
+          value={form.email}
+          onChange={handle}
+          placeholder="Email"
+          required
+          autoComplete="email"
+        />
+      </label>
+
+      <label className="field" htmlFor="reg-password">
+        <span className="field__label">Password*</span>
+        <input
+          id="reg-password"
+          className={`input input--underline ${error ? "input--error" : ""}`}
+          name="password"
+          type="password"
+          value={form.password}
+          onChange={handle}
+          placeholder="Password"
+          required
+          autoComplete="new-password"
+        />
+      </label>
+
+      <label className="field" htmlFor="reg-name">
+        <span className="field__label">Name*</span>
+        <input
+          id="reg-name"
+          className="input input--underline"
+          name="name"
+          value={form.name}
+          onChange={handle}
+          placeholder="Name"
+          required
+          autoComplete="name"
+        />
+      </label>
+
+      <label className="field" htmlFor="reg-avatar">
+        <span className="field__label">Avatar URL*</span>
+        <input
+          id="reg-avatar"
+          className="input input--underline"
+          name="avatar"
+          value={form.avatar}
+          onChange={handle}
+          placeholder="https://..."
+          autoComplete="url"
+          required
+        />
+      </label>
+
+      {error && (
+        <p className="form-error">
+          Could not sign up. Check your inputs or try another email.
+        </p>
+      )}
+    </ModalWithForm>
   );
 }

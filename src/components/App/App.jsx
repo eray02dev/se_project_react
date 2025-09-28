@@ -22,14 +22,9 @@ import { CurrentTemperatureUnitProvider } from "../../contexts/CurrentTemperatur
 // current user context
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-// ✅ constants importları: apiKey ve defaultClothingItems eklendi
-import {
-  coordinates,
-  apiKey,
-  defaultClothingItems,
-} from "../../utils/constants";
+import { coordinates, apiKey } from "../../utils/constants";
 
-// API katmanı
+// API katmanı — token'lı çağrılar
 import {
   getItems,
   addItem,
@@ -57,9 +52,7 @@ function App() {
   });
 
   // ---- Items / modals ----
-  // ✅ 1) defaultClothingItems ile seed edildi
-  const [clothingItems, setClothingItems] = useState(defaultClothingItems);
-
+  const [clothingItems, setClothingItems] = useState([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
 
@@ -74,12 +67,11 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // ---- Auth modals state ----
-  // ✅ 2) Boolean state adları isXOpen şeklinde
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
-  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+  const [openLogin, setOpenLogin] = useState(false);
+  const [openRegister, setOpenRegister] = useState(false);
+  const [openEditProfile, setOpenEditProfile] = useState(false);
 
-  // ---- UI feedback ----
+  // ---- UI feedback for forms ----
   const [busyLogin, setBusyLogin] = useState(false);
   const [errLogin, setErrLogin] = useState("");
   const [busyRegister, setBusyRegister] = useState(false);
@@ -89,8 +81,7 @@ function App() {
   const navigate = useNavigate();
 
   // Helpers
-  // ✅ 3) token() -> getToken()
-  const getToken = () => localStorage.getItem("jwt");
+  const token = () => localStorage.getItem("jwt");
 
   const handleAddClick = () => setIsAddModalOpen(true);
   const closeActiveModal = () => setIsAddModalOpen(false);
@@ -106,20 +97,9 @@ function App() {
   };
   const closeConfirm = () => setIsConfirmOpen(false);
 
-  // --- Edit modal handlers (loglu)
-  const handleOpenEdit = () => {
-    console.log("[App] set isEditProfileOpen = true");
-    setIsEditProfileOpen(true);
-  };
-  const handleCloseEdit = () => {
-    console.log("[App] set isEditProfileOpen = false");
-    setIsEditProfileOpen(false);
-  };
-
   // ---------- Effects: initial fetch ----------
   useEffect(() => {
     // weather
-    // ✅ APIkey -> apiKey
     getWeather(coordinates, apiKey)
       .then((data) => setWeatherData(filterWeatherData(data)))
       .catch(console.error);
@@ -133,7 +113,7 @@ function App() {
       .catch(console.error);
 
     // token check → user
-    const t = getToken();
+    const t = token();
     if (t) {
       checkToken(t)
         .then((user) => {
@@ -157,7 +137,7 @@ function App() {
       weather: newItem.weather,
     };
 
-    addItem(payload, getToken())
+    addItem(payload, token())
       .then((saved) => {
         const clientShape = { ...saved, link: saved.imageUrl };
         setClothingItems((prev) => [clientShape, ...prev]);
@@ -171,7 +151,7 @@ function App() {
     if (!pendingDeleteId) return;
     setIsDeleting(true);
 
-    deleteItem(pendingDeleteId, getToken())
+    deleteItem(pendingDeleteId, token())
       .then(() => {
         setClothingItems((prev) =>
           prev.filter((it) => (it.id ?? it._id) !== pendingDeleteId)
@@ -183,8 +163,9 @@ function App() {
       .finally(() => setIsDeleting(false));
   };
 
+  // like/dislike
   const handleCardLike = ({ id, isLiked }) => {
-    const t = getToken();
+    const t = token();
     if (!t) return;
 
     const req = isLiked ? removeCardLike(id, t) : addCardLike(id, t);
@@ -212,7 +193,7 @@ function App() {
       .then((user) => {
         setCurrentUser(user);
         setIsLoggedIn(true);
-        setIsLoginOpen(false); // ✅
+        setOpenLogin(false);
       })
       .catch(() => setErrLogin("1"))
       .finally(() => setBusyLogin(false));
@@ -230,7 +211,7 @@ function App() {
       .then((user) => {
         setCurrentUser(user);
         setIsLoggedIn(true);
-        setIsRegisterOpen(false); // ✅
+        setOpenRegister(false);
       })
       .catch(() => setErrRegister("1"))
       .finally(() => setBusyRegister(false));
@@ -246,13 +227,23 @@ function App() {
   // ---------- Profile edit ----------
   const handleUpdateProfile = ({ name, avatar }) => {
     setBusyEdit(true);
-    updateUser({ name, avatar }, getToken())
+    updateUser({ name, avatar }, token())
       .then((usr) => {
         setCurrentUser(usr);
-        setIsEditProfileOpen(false); // ✅
+        setOpenEditProfile(false);
       })
       .catch(console.error)
       .finally(() => setBusyEdit(false));
+  };
+
+  // ---------- Modal arası geçişler ----------
+  const showLogin = () => {
+    setOpenRegister(false);
+    setOpenLogin(true);
+  };
+  const showRegister = () => {
+    setOpenLogin(false);
+    setOpenRegister(true);
   };
 
   return (
@@ -264,10 +255,11 @@ function App() {
             weatherData={weatherData}
             isLoggedIn={isLoggedIn}
             currentUser={currentUser}
-            onOpenLogin={() => setIsLoginOpen(true)} // ✅
-            onOpenRegister={() => setIsRegisterOpen(true)} // ✅
+            onOpenLogin={() => setOpenLogin(true)}
+            onOpenRegister={() => setOpenRegister(true)}
             onGoProfile={() => navigate("/profile")}
           />
+
           <Routes>
             <Route
               path="/"
@@ -290,7 +282,7 @@ function App() {
                     clothingItems={clothingItems}
                     onCardClick={handleCardClick}
                     onAddClick={handleAddClick}
-                    onEditProfile={handleOpenEdit}
+                    onEditProfile={() => setOpenEditProfile(true)}
                     onLogout={handleLogout}
                     currentUser={currentUser}
                     onCardLike={handleCardLike}
@@ -300,7 +292,9 @@ function App() {
               }
             />
           </Routes>
+
           <Footer />
+
           {/* Add Item */}
           <AddItemModal
             isOpen={isAddModalOpen}
@@ -308,6 +302,7 @@ function App() {
             onAddItem={handleAddItem}
             isSaving={isSaving}
           />
+
           {/* Preview modal */}
           {selectedCard && (
             <ItemModal
@@ -319,6 +314,7 @@ function App() {
               currentUser={currentUser}
             />
           )}
+
           {/* Delete confirm */}
           <ConfirmDeleteModal
             isOpen={isConfirmOpen}
@@ -326,25 +322,29 @@ function App() {
             onConfirm={handleConfirmDelete}
             isDeleting={isDeleting}
           />
+
           {/* Auth modals */}
           <LoginModal
-            isOpen={isLoginOpen} // ✅
-            onClose={() => setIsLoginOpen(false)} // ✅
+            isOpen={openLogin}
+            onClose={() => setOpenLogin(false)}
             onSubmit={handleLogin}
             busy={busyLogin}
             error={!!errLogin}
+            onShowRegister={showRegister} // ⇦ geçiş
           />
           <RegisterModal
-            isOpen={isRegisterOpen} // ✅
-            onClose={() => setIsRegisterOpen(false)} // ✅
+            isOpen={openRegister}
+            onClose={() => setOpenRegister(false)}
             onSubmit={handleRegister}
             busy={busyRegister}
             error={!!errRegister}
+            onShowLogin={showLogin} // ⇦ geçiş
           />
+
           {/* Edit profile */}
           <EditProfileModal
-            isOpen={isEditProfileOpen} // ✅
-            onClose={handleCloseEdit}
+            isOpen={openEditProfile}
+            onClose={() => setOpenEditProfile(false)}
             onSubmit={handleUpdateProfile}
             initial={{
               name: currentUser?.name || "",

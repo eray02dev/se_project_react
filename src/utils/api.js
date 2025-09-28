@@ -1,16 +1,20 @@
+// src/utils/api.js
 export const baseUrl = "http://localhost:3001";
 
-export const check = (res) => {
+// Tek yerden kullanılacak ortak response checker
+export function check(res) {
   if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
   return res.json();
-};
+}
 
-// herkes için açık
+/* ---------- Item & User API ---------- */
+
+// Public: tüm item'lar
 export function getItems() {
   return fetch(`${baseUrl}/items`).then(check);
 }
 
-// yeni kart ekle (protected)
+// Protected: item ekle
 export function addItem(item, token) {
   return fetch(`${baseUrl}/items`, {
     method: "POST",
@@ -22,7 +26,7 @@ export function addItem(item, token) {
   }).then(check);
 }
 
-// kart sil (protected)
+// Protected: item sil
 export function deleteItem(id, token) {
   return fetch(`${baseUrl}/items/${id}`, {
     method: "DELETE",
@@ -30,7 +34,7 @@ export function deleteItem(id, token) {
   }).then(check);
 }
 
-// karta like ekle (protected)
+// Protected: like ekle
 export function addCardLike(id, token) {
   return fetch(`${baseUrl}/items/${id}/likes`, {
     method: "PUT",
@@ -38,7 +42,7 @@ export function addCardLike(id, token) {
   }).then(check);
 }
 
-// karttan like kaldır (protected)
+// Protected: like kaldır
 export function removeCardLike(id, token) {
   return fetch(`${baseUrl}/items/${id}/likes`, {
     method: "DELETE",
@@ -46,7 +50,7 @@ export function removeCardLike(id, token) {
   }).then(check);
 }
 
-// ✅ profil güncelle (protected) — Sprint 14
+// Protected: profil güncelle
 export function updateUser({ name, avatar }, token) {
   return fetch(`${baseUrl}/users/me`, {
     method: "PATCH",
